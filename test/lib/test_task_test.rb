@@ -24,6 +24,7 @@ class TestTestTask < Test::Unit::TestCase
     tt = Rake::TestTask.new do |t| end
     assert_not_nil tt
     assert_equal :test, tt.name
+    assert_equal 'Run tests', tt.description
     assert_equal ['lib'], tt.libs
     assert_equal 'test/test*.rb', tt.pattern
     assert_equal false, tt.verbose
@@ -32,12 +33,14 @@ class TestTestTask < Test::Unit::TestCase
 
   def test_non_defaults
     tt = Rake::TestTask.new(:example) do |t|
+      t.description = 'Run tests in isolation'
       t.libs = ['src', 'ext']
       t.pattern = 'test/tc_*.rb'
       t.verbose = true
     end
     assert_not_nil tt
     assert_equal :example, tt.name
+    assert_equal 'Run tests in isolation', tt.description
     assert_equal ['src', 'ext'], tt.libs
     assert_equal 'test/tc_*.rb', tt.pattern
     assert_equal true, tt.verbose

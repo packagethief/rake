@@ -39,6 +39,9 @@ module Rake
     # Name of test task. (default is :test)
     attr_accessor :name
 
+    # Description of the test task. (default is 'Run tests')
+    attr_accessor :description
+
     # List of directories to added to $LOAD_PATH before running the
     # tests. (default is 'lib')
     attr_accessor :libs
@@ -80,6 +83,7 @@ module Rake
     # Create a testing task.
     def initialize(name=:test)
       @name = name
+      @description = "Run tests" + (@name==:test ? "" : " for #{@name}")
       @libs = ["lib"]
       @pattern = nil
       @options = nil
@@ -95,7 +99,7 @@ module Rake
 
     # Create the tasks defined by this task lib.
     def define
-      desc "Run tests" + (@name==:test ? "" : " for #{@name}")
+      desc @description
       task @name do
         RakeFileUtils.verbose(@verbose) do
           ruby "#{ruby_opts_string} #{run_code} #{file_list_string} #{option_list}"
